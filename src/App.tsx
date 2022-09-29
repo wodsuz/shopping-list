@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import products from "./data/products.json";
 import { DeleteFilled } from "@ant-design/icons";
-import { Avatar, List, Descriptions, PageHeader, Button, Checkbox } from "antd";
+import { Image, List, Descriptions, PageHeader, Button, Checkbox } from "antd";
 
 function App() {
   return (
@@ -40,11 +40,10 @@ function App() {
           <List.Item>
             <List.Item.Meta
               avatar={
-                <Avatar
-                  shape="square"
-                  size={64}
+                <Image
+                  width={64}
                   src={product.base64Image}
-                  style={{ backgroundColor: "#87d068" }}
+                  fallback="fallback.png"
                 />
               }
               title={product.title}
