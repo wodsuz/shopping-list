@@ -2,11 +2,38 @@ import React from "react";
 import "antd/dist/antd.css";
 import styled from "styled-components";
 
+import { useState, useCallback } from "react";
 import products from "./data/products.json";
 import { DeleteFilled } from "@ant-design/icons";
-import { Image, List, Descriptions, PageHeader, Button, Checkbox } from "antd";
+import {
+  Image,
+  List,
+  Descriptions,
+  PageHeader,
+  Button,
+  Checkbox,
+  Input,
+} from "antd";
 
 function App() {
+  const [checkedState, setCheckedState] = useState(
+    new Array(products.products.length).fill(false)
+  );
+
+  const handleCheck = useCallback(
+    (id: number) => {
+      const updatedCheckedState = checkedState.map(
+        (state, index) => (index === id ? !state : state) //convert state for checkBox.
+      );
+      setCheckedState(updatedCheckedState);
+    },
+    [checkedState]
+  );
+
+  const handleDelete = useCallback(() => {
+    setCheckedState(new Array(products.products.length).fill(false));
+  }, []);
+
   return (
     <Container>
       <div>
@@ -22,6 +49,7 @@ function App() {
               className="delete"
               icon={<DeleteFilled style={{ fontSize: "150%" }} />}
               size="large"
+              onClick={() => handleDelete()}
             ></Button>,
           ]}
         >
@@ -36,23 +64,32 @@ function App() {
       <List
         itemLayout="horizontal"
         dataSource={products.products}
-        renderItem={(product) => (
-          <List.Item>
+        renderItem={(product, index) => (
+          <List.Item onClick={() => handleCheck(index)}>
             <List.Item.Meta
               avatar={
                 <Image
                   width={64}
                   src={product.base64Image}
                   fallback="fallback.png"
+                  preview={false}
                 />
               }
               title={product.title}
-              description={product.description.substring(0, 50) + "..."}
+              description={product.description.substring(0, 100) + "..."}
             />
-            <Checkbox className="checkbox"></Checkbox>
+            <Checkbox
+              className="checkbox"
+              checked={checkedState[index]}
+            ></Checkbox>
           </List.Item>
         )}
       />
+
+      <Input placeholder="Enter product name or description" />
+      <Button type="primary" block className="addListbtn">
+        Add to List
+      </Button>
     </Container>
   );
 }
@@ -84,6 +121,7 @@ const Container = styled.div`
   }
   .ant-checkbox-checked .ant-checkbox-inner {
     background-color: #444444 !important;
+    border: none;
   }
   .ant-checkbox {
     /* Double-sized Checkboxes */
@@ -93,6 +131,12 @@ const Container = styled.div`
     -o-transform: scale(1.5); /* Opera */
     transform: scale(1.5);
     padding: 10px;
+  }
+  .addListbtn {
+    border: none;
+    margin-top: 20px;
+    color: #ffffff;
+    background-color: #777777;
   }
 `;
 
