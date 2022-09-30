@@ -14,6 +14,7 @@ import {
   Checkbox,
   Input,
   notification,
+  Tooltip,
 } from "antd";
 import { IProducts } from "./types";
 
@@ -128,8 +129,21 @@ function App() {
                 />
               }
               title={product.title}
-              description={product.description.substring(0, 100) + "..."}
+              description={
+                <>
+                  {" "}
+                  <Tooltip
+                    title={product.description}
+                    color={"#444444"}
+                    key={index}
+                    mouseLeaveDelay={0}
+                  >
+                    {product.description.substring(0, 100) + "..."}
+                  </Tooltip>
+                </>
+              }
             />
+
             <Checkbox
               className="checkbox"
               checked={checkedState[index]}
