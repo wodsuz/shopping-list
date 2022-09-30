@@ -44,3 +44,15 @@ Product Data:
   description: "", // (not used in this coding example) product description
 }
 ```
+
+### PrintScreens
+
+![Search Funtion](demo/img1.jpg?raw=true "Search Function")
+![Add item Funtion](demo/img2.jpg?raw=true "Add item Function")
+![Product img Not avalible Funtion](demo/img3.jpg?raw=true "Product img Not avalible Funtion")
+
+### Additional packages
+
+- I have installed ant-design for styling purposes.
+- Styled-components to modift ant design components based on provided wireframe.
+- Typescript to eliminate type mismatch related errors

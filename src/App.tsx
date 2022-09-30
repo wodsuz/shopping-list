@@ -131,7 +131,6 @@ function App() {
               title={product.title}
               description={
                 <>
-                  {" "}
                   <Tooltip
                     title={product.description}
                     color={"#444444"}
