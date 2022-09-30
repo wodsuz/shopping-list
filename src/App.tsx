@@ -13,18 +13,32 @@ import {
   Button,
   Checkbox,
   Input,
+  notification,
 } from "antd";
+import { IProducts } from "./types";
 
 function App() {
   const [checkedState, setCheckedState] = useState(
     new Array(products.products.length).fill(false)
   );
+  const [items, setItems] = useState<IProducts[]>([]);
+
+  const [listBtnLoading, setListBtnLoading] = useState(false);
+  const [enableListBtn, setEnableListBtn] = useState(false);
+
+  const allProducts: IProducts[] = products.products;
+  let searchedProducts: IProducts[] = [];
 
   const handleCheck = useCallback(
     (id: number) => {
       const updatedCheckedState = checkedState.map(
         (state, index) => (index === id ? !state : state) //convert state for checkBox.
       );
+      if (updatedCheckedState.includes(true)) {
+        setEnableListBtn(true);
+      } else {
+        setEnableListBtn(false);
+      }
       setCheckedState(updatedCheckedState);
     },
     [checkedState]
@@ -33,6 +47,44 @@ function App() {
   const handleDelete = useCallback(() => {
     setCheckedState(new Array(products.products.length).fill(false));
   }, []);
+
+  const handleAddtoList = useCallback(() => {
+    setListBtnLoading(true);
+    let displayText = "";
+    let counter = 0;
+
+    checkedState.map((state: boolean, index) => {
+      if (state) {
+        displayText = displayText + products.products[index].title + " , ";
+        counter++;
+      }
+      return counter;
+    });
+
+    notification.success({
+      message: <>{counter} Item(s) added to your list</>,
+      description: (
+        <>
+          <b> {displayText} </b>
+          <br /> has been added to your list.
+        </>
+      ),
+    });
+    setListBtnLoading(false);
+  }, [checkedState, setListBtnLoading]);
+
+  const handleSearchProduct = (keyword: string) => {
+    searchedProducts = [];
+
+    allProducts.map((product) =>
+      product.title.toLowerCase().includes(keyword.toLowerCase()) ||
+      product.description.toLowerCase().includes(keyword.toLowerCase())
+        ? searchedProducts.push(product)
+        : ""
+    );
+
+    setItems(searchedProducts);
+  };
 
   return (
     <Container>
@@ -63,7 +115,7 @@ function App() {
 
       <List
         itemLayout="horizontal"
-        dataSource={products.products}
+        dataSource={items}
         renderItem={(product, index) => (
           <List.Item onClick={() => handleCheck(index)}>
             <List.Item.Meta
@@ -86,8 +138,18 @@ function App() {
         )}
       />
 
-      <Input placeholder="Enter product name or description" />
-      <Button type="primary" block className="addListbtn">
+      <Input
+        placeholder="Enter product name or description"
+        onChange={(e: any) => handleSearchProduct(e.target.value)}
+      />
+      <Button
+        type="primary"
+        block
+        className="addListbtn"
+        onClick={handleAddtoList}
+        loading={listBtnLoading}
+        disabled={!enableListBtn}
+      >
         Add to List
       </Button>
     </Container>
@@ -132,7 +194,9 @@ const Container = styled.div`
     transform: scale(1.5);
     padding: 10px;
   }
-  .addListbtn {
+  .addListbtn,
+  .addListbtn:hover,
+  .addListbtn:focus {
     border: none;
     margin-top: 20px;
     color: #ffffff;
