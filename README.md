@@ -1,5 +1,7 @@
 # Coding Example Frontend JS
 
+Coding task solution for Frontend Dev position in Wirecube
+
 ## Your task
 
 Create a simple client side shopping list for mobile devices, with these requirements:
@@ -47,9 +49,9 @@ Product Data:
 
 ### PrintScreens
 
-![Search Funtion](demo/img1.jpg?raw=true "Search Function")
-![Add item Funtion](demo/img2.jpg?raw=true "Add item Function")
-![Product img Not avalible Funtion](demo/img3.jpg?raw=true "Product img Not avalible Funtion")
+- ![Search Funtion](public/Demo/img1.png "Search Function")
+- ![Add item Funtion](public/Demo/img2.png "Add item Function")
+- ![Product img Not avalible Funtion](public/Demo/img3.png "Product img Not avalible Funtion")
 
 ### Additional packages
 
