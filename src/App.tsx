@@ -1,15 +1,11 @@
-import React from "react";
 import "antd/dist/antd.css";
 import styled from "styled-components";
 
 import { useState, useCallback } from "react";
 import products from "./data/products.json";
-import { DeleteFilled } from "@ant-design/icons";
 import {
   Image,
   List,
-  Descriptions,
-  PageHeader,
   Button,
   Checkbox,
   Input,
@@ -18,11 +14,13 @@ import {
 } from "antd";
 import { IProducts } from "./types";
 
+import { Header } from "./Components";
+
 function App() {
   const [checkedState, setCheckedState] = useState(
     new Array(products.products.length).fill(false)
   );
-  const [items, setItems] = useState<IProducts[]>([]);
+  const [items, setItems] = useState<IProducts[]>(products.products);
 
   const [listBtnLoading, setListBtnLoading] = useState(false);
   const [enableListBtn, setEnableListBtn] = useState(false);
@@ -32,8 +30,8 @@ function App() {
 
   const handleCheck = useCallback(
     (id: number) => {
-      const updatedCheckedState = checkedState.map(
-        (state, index) => (index === id ? !state : state) //convert state for checkBox.
+      const updatedCheckedState = checkedState.map((state, index) =>
+        index === id ? !state : state
       );
       if (updatedCheckedState.includes(true)) {
         setEnableListBtn(true);
@@ -44,10 +42,6 @@ function App() {
     },
     [checkedState]
   );
-
-  const handleDelete = useCallback(() => {
-    setCheckedState(new Array(products.products.length).fill(false));
-  }, []);
 
   const handleAddtoList = useCallback(() => {
     setListBtnLoading(true);
@@ -87,32 +81,13 @@ function App() {
     setItems(searchedProducts);
   };
 
+  const getData = (data: any) => {
+    setCheckedState(data);
+  };
+
   return (
     <Container>
-      <div>
-        <PageHeader
-          avatar={{ src: "fallback.png" }}
-          ghost={false}
-          onBack={() => window.history.back()}
-          title="Shopping List"
-          className="header"
-          extra={[
-            <Button
-              key="3"
-              className="delete"
-              icon={<DeleteFilled style={{ fontSize: "150%" }} />}
-              size="large"
-              onClick={() => handleDelete()}
-            ></Button>,
-          ]}
-        >
-          <Descriptions size="small" column={3}>
-            <Descriptions.Item label="Created by">
-              Ongun Demirag
-            </Descriptions.Item>
-          </Descriptions>
-        </PageHeader>
-      </div>
+      <Header onDeleteAll={getData} prod={products} />
 
       <List
         itemLayout="horizontal"
