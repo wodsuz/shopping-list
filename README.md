@@ -56,5 +56,5 @@ Product Data:
 ### Additional packages
 
 - I have installed ant-design for styling purposes.
-- Styled-components to modift ant design components based on provided wireframe.
+- Styled-components to modify ant design components based on provided wireframe.
 - Typescript to eliminate type mismatch related errors
